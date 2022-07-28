@@ -3,6 +3,8 @@ flash
 
 flash_atm.sh
 
-*.txt !conf.txt
+*.txt
+
+!conf.txt
 
 *.hex
