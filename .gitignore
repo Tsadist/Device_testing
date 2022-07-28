@@ -1,0 +1,8 @@
+
+flash 
+
+flash_atm.sh
+
+*.txt ! conf.txt
+
+*.hex
