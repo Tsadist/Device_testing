@@ -1,9 +1,5 @@
 #!/bin/bash
 
-function GSM {
-stty -F /dev/ttyS0 115200 -echo -inlcr
-rm resultsGSM.txt
-
 serport () {
 cat /dev/ttyS0 > res.log &
 touch res.log
@@ -23,6 +19,9 @@ fi
 killall cat
 }
 
+function GSM {
+stty -F /dev/ttyS0 115200 -echo -inlcr
+rm resultsGSM.txt
 
 serport "ATI"
 whiptail --title "Проверка GSM модуля" --msgbox "Команда ATI: $con" 10 60

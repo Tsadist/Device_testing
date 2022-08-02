@@ -1,0 +1,4 @@
+  reset = 25;
+#  reset = 5;
+  baudrate = 400000;
+#  baudrate = 12000;

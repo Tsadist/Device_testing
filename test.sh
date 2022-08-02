@@ -1,14 +1,18 @@
 #!/bin/bash
+/home/pi/7600/wan.sh > wan.txt
+cat wan.txt
+kod2=$(echo $?)
+#echo $kod2
 
-str=$(grep -c '^dtoverlay=gpio-poweroff,active_low="y"' /boot/config.txt)
-if [[ $str < 1 ]]
-	then
-	whiptail --title "Прошивка модема sim7600" --msgbox 'В файле конфигурации не найдена требуемая строка. Пожалуйста выполните команду sudo nano /boot/config.txt и замените текст строки 82 на: dtoverlay=gpio-poweroff,active_low="y",gpiopin=6,input,active_delay_ms=0,inactive_delay_ms=0 После этого запустите проверку модема sim7600' 15 65
-fi
-exit
-sed -i '1067s/reset = 25;/reset = 5;/' /usr/local/etc/avrdude.conf
-sed -i '1068s/baudrate = 400000;/baudrate = 12000;/' /usr/local/etc/avrdude.conf
+        if [[ $kod2 == 0 ]]
+        then
+                echo "Подключение к интернету прошло успешно" >> results.txt
+                whiptail --title "Проверка модема sim7600" --msgbox "Прошивка загружена успешно" 10 60
+        else
+                echo "Возникли проблемы при загрузке прошивки" >> results.txt
+                whiptail --title "Проверка модема sim7600" --msgbox "Возникли проблемы при загрузке прошивки" 10 60
+        fi
 
-cd /home/pi/7600
-./install.sh >> res
-cat res
+sed '1067s/  reset = 25;/  reset = 5;/' /usr/local/etc/avrdude.conf
+awk '/wwan0/{print $0}' wan.txt
+rm wan.txt
