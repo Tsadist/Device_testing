@@ -152,7 +152,7 @@ Interface options - I2C - ON
 
 3. Спутник А (файлы требуемые для выполнения wan.sh: libqmi-utils udhcpc)
         
-3.1 ЧРВ
+3.1. ЧРВ
         
         sudo hwclock -w
         //через 2-3 секунды
@@ -176,7 +176,14 @@ Interface options - I2C - ON
         sudo i2cdetect -y 1
         sudo hwclock -r      
  
- 3.2 Прошивка 
+          
+ 
+3.2. Прошивка и проверка модема sim7600      
+        
+         minicom -D /dev/ttyUSB2
+                ATI             //выдает пареметры
+                AT+CUSBADB=1    // выдает OK
+                AT+CRESET       //система перезагружается
 
         sudo nano /boot/config.txt
         //dtoverlay=gpio-poweroff,active_low="y",gpiopin=6,input,active_delay_ms=0,inactive_delay_ms=0
@@ -185,15 +192,8 @@ Interface options - I2C - ON
         // найти id = "linuxspi"; заменить reset 25 на 5; baudrate 400000 на 12000
         
         cd /7600              
-        ./install.sh            
- 
-3.3. Проверка модема sim7600      
+        ./install.sh  
         
-         minicom -D /dev/ttyUSB2
-                ATI             //выдает пареметры
-                AT+CUSBADB=1    // выдает OK
-                AT+CRESET       //система перезагружается
-
         ./wan.sh                //Подключение к интернету
         // в выводе скрипта идет информация о wwan0 интерфейсе с ip адресом 8,10,12 сети (не 100 и более)
         // для полной проверки мы запускаем 
@@ -209,7 +209,7 @@ Interface options - I2C - ON
         minicom -D /dev/ttyUSB2
              AT+CREG?        //Ответ отличный от 0,1 - проблема с sim-картой, антеной и тд.
                 
-3.4. Проверка многофункционального светодиода
+3.3. Проверка многофункционального светодиода
 
         raspi-gpio set 4 op dh //вкл
         raspi-gpio set 4 op dl //выкл
