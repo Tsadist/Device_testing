@@ -51,7 +51,7 @@
 1.2. Запуск вентилятора 
 
         raspi-gpio set 18 op dh //включить вентилятор
-        raspi-gpio set 18 op dl //выключить вентилятор 
+        raspi-gpio set 18 ip //выключить вентилятор 
  
  1.3. ЧРВ  
  
@@ -199,6 +199,10 @@ Interface options - I2C - ON
         // для полной проверки мы запускаем 
         ping 8.8.8.8 -I wwan0
         
+        minicom -D /dev/ttyUSB4
+                AT+CONFIG? //Нужно получить пароль и отправить его как сообщение на устройство
+                
+        
 Если не получилось:
 Проверить воткнут ли USB.
 
@@ -220,26 +224,26 @@ Interface options - I2C - ON
         
         // Ключи камеры слева направо. Потухает/гаснет
         raspi-gpio set 6 op dl //выкл
-        raspi-gpio set 6 op dh //вкл  
+        raspi-gpio set 6 ip //вкл  
         raspi-gpio set 13 op dl 
-        raspi-gpio set 13 op dh  
+        raspi-gpio set 13 ip  
         raspi-gpio set 26 op dl 
-        raspi-gpio set 26 op dh  
+        raspi-gpio set 26 ip  
         
         //Ключ вентилятора. Запускается
         raspi-gpio set 18 op dh //вкл  
-        raspi-gpio set 18 op dl //выкл
+        raspi-gpio set 18 ip //выкл
         
         //Коммутатор. Переключить кабель езернет на Расбери
         raspi-gpio set 5 op dl //выкл
-        raspi-gpio set 5 op dh //вкл
+        raspi-gpio set 5 ip //вкл
         
         //Сухие контакты. Проверять с мультиметром. Без питания не пищит, с питание пищит. 
         //Переставлять клемму. Слева напрво
         raspi-gpio set 16 op dh //вкл  
-        raspi-gpio set 16 op dl //выкл
+        raspi-gpio set 16 ip //выкл
         raspi-gpio set 23 op dh //вкл  
-        raspi-gpio set 23 op dl //выкл
+        raspi-gpio set 23 ip //выкл
         
 4.2 GSM модуль         
 
@@ -272,3 +276,54 @@ Interface options - I2C - ON
                                 //Последний параметр это пароль
   
 Отправить с телефона на него смс с паролем. Устройство должно перезагрузится
+
+5. Мезонинная плата "Мезонин Uno" (1-a симочная) для "Умный двор" (Smart gate)
+
+5.1. Проверка пинов    
+        
+        // Ключи камеры слева направо. Потухает/гаснет
+        raspi-gpio set 6 op dl //выкл
+        raspi-gpio set 6 ip //вкл  
+        raspi-gpio set 13 op dl 
+        raspi-gpio set 13 ip  
+        raspi-gpio set 26 op dl 
+        raspi-gpio set 26 ip  
+        
+        //Ключ вентилятора. Запускается
+        raspi-gpio set 18 op dh //вкл  
+        raspi-gpio set 18 ip //выкл
+        
+        //Коммутатор. Переключить кабель езернет на Расбери
+        raspi-gpio set 5 op dl //выкл
+        raspi-gpio set 5 ip //вкл
+        
+        //Сухие контакты. Проверять с мультиметром. Без питания не пищит, с питание пищит. 
+        //Переставлять клемму. Слева напрво
+        raspi-gpio set 16 op dh //вкл  
+        raspi-gpio set 16 ip //выкл
+        raspi-gpio set 23 op dh //вкл  
+        raspi-gpio set 23 ip //выкл
+        
+5.2. Прошивка и проверка модема sim7600      
+        
+         minicom -D /dev/ttyUSB2
+                ATI             //выдает пареметры
+                AT+CUSBADB=1    // выдает OK
+                AT+CRESET       //система перезагружается
+
+        sudo nano /boot/config.txt
+        //dtoverlay=gpio-poweroff,active_low="y",gpiopin=6,input,active_delay_ms=0,inactive_delay_ms=0
+        
+        sudo nano /usr/local/etc/avrdude.conf
+        // найти id = "linuxspi"; заменить reset 25 на 5; baudrate 400000 на 12000
+        
+        cd /7600              
+        ./install.sh  
+        
+        ./wan.sh                //Подключение к интернету
+        // в выводе скрипта идет информация о wwan0 интерфейсе с ip адресом 8,10,12 сети (не 100 и более)
+        // для полной проверки мы запускаем 
+        ping 8.8.8.8 -I wwan0
+        
+        minicom -D /dev/ttyUSB4
+                AT+CONFIG? //Нужно получить пароль и отправить его как сообщение на устройство
