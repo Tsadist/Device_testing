@@ -21,6 +21,7 @@ killall cat
 
 function GSM {
 stty -F /dev/ttyS0 115200 -echo -inlcr
+touch resultsGSM.txt
 rm resultsGSM.txt
 
 serport "ATI"
@@ -94,7 +95,7 @@ echo "AT+CPOWD=1" > /dev/ttyS0
 
 cat res.log
 ans=$(cat res.log)
-if [[ $ans == *"SMS"*"Ready" ]];
+if [[ $ans =~ SMS.Ready ]];
 then
 	con2=`echo "Выполнена успешно"`
 	echo $con2 >> resultsGSM.txt
@@ -111,9 +112,11 @@ res=$(awk '/^Возникли проблемы/{print $2}' resultsGSM.txt)
 
 if [[ $res == *"проблемы"* ]]
 then
-        echo "С GSM модулем возникли проблемы"
+        echo "С GSM модулем возникли проблемы" >> results.txt
+	whiptail --title "Проверка GSM модуля" --msgbox "С GSM модулем возникли проблемы"
 else
-        echo "GSM модуль выполняет все требуемые функции"
+        echo "GSM модуль выполняет все требуемые функции" >> results.txt
+	whiptail --title "Проверка GSM модуля" --msgbox "GSM модуль выполняет все требуемые функции"
 fi
 
 
