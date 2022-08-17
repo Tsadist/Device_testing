@@ -247,6 +247,8 @@ Interface options - I2C - ON
         
 4.2 GSM модуль         
 
+Перезагрузка GSM модуля осуществляется через 27 gpio.
+
 Подключить антену к модулю
 
         minicom -D /dev/ttyS0
