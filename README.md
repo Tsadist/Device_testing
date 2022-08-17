@@ -267,8 +267,17 @@ Interface options - I2C - ON
 
                 ./flash smartgate.hex
                 sudo halt
+               
                 
-4.4 Преферийный процессор от mega328p           
+
+4.4 Преферийный процессор от mega328p
+
+Как установить бибилиотеку libwiringPi:
+
+        cd /tmp
+        wget https://project-downloads.drogon.net/wiringpi-latest.deb
+        sudo dpkg -i wiringpi-latest.deb
+        
         
         sudo dtparam spi=on     //Включили spi
         ./test_atm              //Запустили файл выполнения проверки. 
@@ -276,6 +285,8 @@ Interface options - I2C - ON
                                 //Последний параметр это пароль
   
 Отправить с телефона на него смс с паролем. Устройство должно перезагрузится
+
+Принудительно устанавливается параметр при помощи команды вида ./test_atm 0x<номер параметра>0 <число, которое задается>
 
 5. Мезонинная плата "Мезонин Uno" (1-a симочная) для "Умный двор" (Smart gate)
 
