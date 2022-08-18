@@ -273,13 +273,6 @@ Interface options - I2C - ON
                 
 
 4.4 Преферийный процессор от mega328p
-
-Как установить бибилиотеку libwiringPi:
-
-        cd /tmp
-        wget https://project-downloads.drogon.net/wiringpi-latest.deb
-        sudo dpkg -i wiringpi-latest.deb
-        
         
         sudo dtparam spi=on     //Включили spi
         ./test_atm              //Запустили файл выполнения проверки. 
