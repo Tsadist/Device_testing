@@ -62,7 +62,7 @@
  Если не работает:
  
         sudo nano /boot/config.txt  
-        //dtverlay=i2c-rtc, mcp7940x, wekup-source
+        //dtoverlay=i2c-rtc,mcp7940x,wekup-source
         //dtparam=i2c_arm=on
     
 Выполнить:
