@@ -7,12 +7,13 @@
 . ./mega328p.sh
 . ./firmware.sh
 . ./sim7600.sh
-
+. ./rtc.sh
+. ./converter.sh
 
 function test {
 touch results.txt
 rm results.txt
-dev=$(cat conf.txt)
+dev=$(cat conf.conf)
 
 if [[ $dev == 'Мезонинная плата "Мезонин Duo". Процессор от mega328p' ]]
 then
@@ -26,7 +27,7 @@ then
 	switch
 	dry_contacts
 	GSM
-	firmware_flash
+	firmware_halt ./flash
 	result
 
 elif [[ $dev == 'Мезонинная плата "Мезонин Uno" (1 симочная) для "Умный двор" (Smart gate)' ]]
@@ -38,9 +39,19 @@ then
 	sim7600
 	result
 
+elif [[ $dev == 'Мезонинная плата "Страж солнце"' ]]
+then
+	fan
+	rtc
+	firmware_halt ./flash13 t13.hex
+	converter
+	
+
+	result
+
 elif [[ $dev == "GSM модуль sim800" ]]
 then
-	gsm_mod
+	GSM
 	result
 
 elif [[ $dev == "Переферийный процессор от mega328p" ]]

@@ -1,15 +1,18 @@
 #!/bin/bash
 source Testing.sh
+source result.sh
+source gsm_mod.sh
 
 OPTION=$(whiptail --title "Перечень устройств" --menu "Выберете устройство для тестирования" 20 85 7 \
 "1" 'Мезонинная плата "Мезонин Duo" (2-х симочная) для "Умный двор" (Smart gate)' \
 "2" 'Мезонинная плата "Мезонин Duo". Процессор от mega328p' \
 "3" 'Мезонинная плата "Мезонин Uno" (1 симочная) для "Умный двор" (Smart gate)' \
+"4" 'Мезонинная плата "Страж солнце"' \
 "10" 'Отдельный модуль' 3>&1 1>&2 2>&3)
 
 
 function get {
-echo $1 > conf.txt
+echo $1 > conf.conf
 test
 }
 
@@ -21,6 +24,9 @@ case $OPTION in
 	get 'Мезонинная плата "Мезонин Duo". Процессор от mega328p';;
 3)
 	get 'Мезонинная плата "Мезонин Uno" (1 симочная) для "Умный двор" (Smart gate)';;
+4)
+	get 'Мезонинная плата "Страж солнце"';;
+
 10)
 	OPTION=$(whiptail --title "Перечень модулей" --menu "Выберете модуль для тестирования" 20 70 7 \
 	"1" "GSM модуль sim800" \
@@ -31,7 +37,9 @@ case $OPTION in
 
 	case $OPTION in
 	1)
-	get 'GSM модуль sim800';;
+#	get 'GSM модуль sim800';;
+	GSM
+	result;;
 	2)
 	get 'Переферийный процессор от mega328p';;
 	3)
@@ -43,4 +51,4 @@ case $OPTION in
 	esac
 esac
 
-cat conf.txt
+cat conf.conf
