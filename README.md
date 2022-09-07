@@ -106,7 +106,7 @@ Interface options - I2C - ON
         
         sudo sh -c "echo `date '+%s' -d '+ 1 minutes'` > /sys/class/rtc/rtc0/wakealarm"  //ставим будильник
         
-        cat /proc/driver/rtd
+        cat /proc/driver/rtc
         
         sudo halt
         
