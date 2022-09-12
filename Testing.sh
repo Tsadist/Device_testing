@@ -1,18 +1,20 @@
 #!/bin/bash
 . ./cameras.sh
-. ./fan_and_switch.sh
+. ./fan_switch_led.sh
 . ./dry_contacts.sh
 . ./gsm_mod.sh
 . ./result.sh
 . ./mega328p.sh
 . ./firmware.sh
 . ./sim7600.sh
-
+. ./rtc.sh
+. ./converter.sh
+. ./ATtiny13.sh
 
 function test {
 touch results.txt
 rm results.txt
-dev=$(cat conf.txt)
+dev=$(cat conf.conf)
 
 if [[ $dev == 'Мезонинная плата "Мезонин Duo". Процессор от mega328p' ]]
 then
@@ -26,7 +28,7 @@ then
 	switch
 	dry_contacts
 	GSM
-	firmware_flash
+	firmware_halt ./flash
 	result
 
 elif [[ $dev == 'Мезонинная плата "Мезонин Uno" (1 симочная) для "Умный двор" (Smart gate)' ]]
@@ -38,9 +40,20 @@ then
 	sim7600
 	result
 
+elif [[ $dev == 'Мезонинная плата "Страж солнце". До прошивки' ]]
+then
+	fan
+	rtc mcp
+	firmware_halt ./flash13 t13.hex
+
+elif [[ $dev == 'Мезонинная плата "Страж солнце". После прошивки' ]]
+then
+	converter
+	ATtiny13
+
 elif [[ $dev == "GSM модуль sim800" ]]
 then
-	gsm_mod
+	GSM
 	result
 
 elif [[ $dev == "Переферийный процессор от mega328p" ]]
@@ -53,14 +66,57 @@ then
 	dry_contacts
 	result
 
-elif [[ $dev == "Ключи камер" ]]
+elif [[ $dev == 'Выходы управления светодиодами' ]]
+then
+	two_leds
+	result
+
+elif [[ $dev == "Ключи управления камерами" ]]
 then
 	cameras
 	result
 
-elif [[ $dev == "Модем sim7600" ]]
+elif [[ $dev == "Модем с супервизером на основе sim7600" ]]
 then
 	sim7600
 	result
+
+elif [[ $dev == 'Ключ управления вентилятором' ]]
+then
+	fan
+	result
+
+elif [[ $dev == 'Ключ управления коммутатором' ]]
+then
+	switch
+	result
+
+elif [[ $dev == 'Менеджер управления питания на основе МК ATtiny13' ]]
+then
+	ATtiny13
+	result
+
+elif [[ $dev == 'Многофункциональный светодиод' ]]
+then
+	led
+	result
+
+elif [[ $dev == 'Преобразователи интерфейса rs232uart' ]]
+then
+	converter
+	result
+
+elif [[ $dev == 'ЧРВ с будильником "mcp7940x' ]]
+then
+	rtc mcp
+	result
+
+elif [[ $dev == 'ЧРВ "ds1307"' ]]
+then
+
+	rtc ds
+	result
+
 fi
+rm conf.conf
 }

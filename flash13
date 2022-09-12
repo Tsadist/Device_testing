@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ -n "$1" ]; then
+file="$1"
+else
+file="at13.hex"
+fi
+#предотвращения отключения модуля при обновлении прошивки
+raspi-gpio set 17 op dh
+#включаем SPI
+sudo dtparam spi=on
+#создаём копию фала конфигурации
+sudo cp /usr/local/etc/avrdude.conf /usr/local/etc/averdude.conf.bak
+#в базовый файл конфигурации передаем другой файл
+sudo cp /usr/local/etc/avrdude.conf.at13 /usr/local/etc/avrdude.conf
+#прошивка на пониженной скорости
+/usr/local/bin/avrdude -p t13 -b 9600 -c linuxspi -P /dev/spidev0.0 -U flash:w:$file
+#отключаем SPI
+sudo dtparam spi=off
+#возвращаем перезагрузку от ATTiny
+raspi-gpio set 17 ip
+
