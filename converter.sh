@@ -1,4 +1,5 @@
 #!/bin/bash
+
 . ./diabox.sh
 function port {
 
@@ -30,5 +31,7 @@ else
 port ttyS0 "Первый"
 port ttyS0 "Второй"
 fi
+=======
+
 }
 #converter

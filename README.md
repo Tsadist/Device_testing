@@ -62,7 +62,7 @@
  Если не работает:
  
         sudo nano /boot/config.txt  
-        //dtverlay=i2c-rtc, mcp7940x, wekup-source
+        //dtoverlay=i2c-rtc,mcp7940x,wakeup-source
         //dtparam=i2c_arm=on
     
 Выполнить:
@@ -80,7 +80,7 @@ Interface options - I2C - ON
 1.4. Прошивка
 
         sudo nano /boot/config.txt
-        //dtoverlay=gpio poweroff,active_low="y",gpiopin=6,input,active_delay_ms=0,inactive_delay_ms=0
+        //dtoverlay=gpio-poweroff,active_low="y",gpiopin=6,input,active_delay_ms=0,inactive_delay_ms=0
         
         sudo nano /usr/local/etc/avrdude.conf
         // найти id = "linuxspi"; заменить reset 25 на 5; baudrate 400000 на 12000
@@ -106,7 +106,7 @@ Interface options - I2C - ON
         
         sudo sh -c "echo `date '+%s' -d '+ 1 minutes'` > /sys/class/rtc/rtc0/wakealarm"  //ставим будильник
         
-        cat /proc/driver/rtd
+        cat /proc/driver/rtc
         
         sudo halt
         
@@ -247,6 +247,8 @@ Interface options - I2C - ON
         
 4.2 GSM модуль         
 
+Перезагрузка GSM модуля осуществляется через 27 gpio.
+
 Подключить антену к модулю
 
         minicom -D /dev/ttyS0
@@ -261,14 +263,18 @@ Interface options - I2C - ON
 Перезвонить ему и пока идёт звонок в minicom написать:
                 
                 ATH             //Должен сбросить звонок
-                AT+CPOWD=1      //Должен выдать Ready 
+                AT+CPOWD=1      //Должен выдать Ready
+                .....
+                AT+CPOF         //Команда перезагрузки для AITHINK A6
 
 4.3. Прошивка 
 
                 ./flash smartgate.hex
                 sudo halt
+               
                 
-4.4 Преферийный процессор от mega328p           
+
+4.4 Преферийный процессор от mega328p
         
         sudo dtparam spi=on     //Включили spi
         ./test_atm              //Запустили файл выполнения проверки. 
@@ -276,6 +282,8 @@ Interface options - I2C - ON
                                 //Последний параметр это пароль
   
 Отправить с телефона на него смс с паролем. Устройство должно перезагрузится
+
+Принудительно устанавливается параметр при помощи команды вида ./test_atm 0x<номер параметра>0 <число, которое задается>
 
 5. Мезонинная плата "Мезонин Uno" (1-a симочная) для "Умный двор" (Smart gate)
 

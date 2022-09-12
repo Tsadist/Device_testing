@@ -1,4 +1,5 @@
 #!/bin/bash
+<<<<<<< HEAD
 . ./diabox.sh
 
 function exam {
@@ -53,3 +54,12 @@ fi
 }
 
 #rtc
+=======
+
+sudo hwclock -w
+echo $?
+sleep 3
+
+sudo hwclock -r
+echo $?
+>>>>>>> 4793d3f7419be00fb618818be08a426dc0baf95c

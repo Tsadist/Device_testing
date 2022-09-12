@@ -9,7 +9,10 @@
 . ./sim7600.sh
 . ./rtc.sh
 . ./converter.sh
+<<<<<<< HEAD
 . ./ATtiny13.sh
+=======
+>>>>>>> 4793d3f7419be00fb618818be08a426dc0baf95c
 
 function test {
 touch results.txt
@@ -40,6 +43,7 @@ then
 	sim7600
 	result
 
+<<<<<<< HEAD
 elif [[ $dev == 'Мезонинная плата "Страж солнце". До прошивки' ]]
 then
 	fan
@@ -50,6 +54,17 @@ elif [[ $dev == 'Мезонинная плата "Страж солнце". По
 then
 	converter
 	ATtiny13
+=======
+elif [[ $dev == 'Мезонинная плата "Страж солнце"' ]]
+then
+	fan
+	rtc
+	firmware_halt ./flash13 t13.hex
+	converter
+	
+
+	result
+>>>>>>> 4793d3f7419be00fb618818be08a426dc0baf95c
 
 elif [[ $dev == "GSM модуль sim800" ]]
 then
